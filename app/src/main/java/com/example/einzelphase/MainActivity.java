@@ -8,6 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         antwort_server.setText(antwort);
-        serverSide();
+        serverSide(view);
     }
 
-    public void serverSide() {
+    String nachricht ;
+
+    public void serverSide(View view) {
 
         TextView antwort_server = findViewById(R.id.antwort_server);
         EditText matnr_input = findViewById(R.id.matnr_input);
@@ -47,6 +54,28 @@ public class MainActivity extends AppCompatActivity {
        Thread thread = new Thread(new Runnable() {
            @Override
            public void run() {
+               try {
+                   Socket socket = new Socket("se2-isys.aau.at",53212);
+                   PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+                   printWriter.println(matnr_input.getText().toString());
+                   printWriter.flush();
+                   BufferedReader bufferedReader = new BufferedReader(
+                           new InputStreamReader(socket.getInputStream()));
+
+                   nachricht = bufferedReader.readLine();
+
+                   socket.close();
+                   printWriter.close();
+
+               } catch (UnknownHostException e) {
+                   nachricht = "! Unbekannter Host !" ;
+                   e.printStackTrace();
+               }catch (IOException e){
+                   nachricht = "! Serverfehler !" ;
+                   e.printStackTrace();
+               }
+
+               antwort_server.setText(nachricht);
 
            }
        });
