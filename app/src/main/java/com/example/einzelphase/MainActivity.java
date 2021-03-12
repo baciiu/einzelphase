@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void berechung(View view) {
 
-        // 11732093 mod 7 = 2 => replace very second number with ASCII character
+        // 11732093 mod 7 = 2 => replace every second number with ASCII character
 
         TextView antwort_server = findViewById(R.id.antwort_server);
         EditText matnr_input = findViewById(R.id.matnr_input);
