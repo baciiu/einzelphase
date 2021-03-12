@@ -7,7 +7,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,21 +22,43 @@ public class MainActivity extends AppCompatActivity {
 
         // 11732093 mod 7 = 2 => replace very second number with ASCII character
 
-        TextView gib_matnr = findViewById(R.id.gib_matnr);
+        TextView antwort_server = findViewById(R.id.antwort_server);
         EditText matnr_input = findViewById(R.id.matnr_input);
 
         int matnr = Integer.parseInt(matnr_input.getText().toString());
 
-        String solution = "" + matnr;
+        String antwort = "" + matnr;
         String ascii = "ABCDEFGHIO" ;
 
-        for(int i = 0  ; i < solution.length()-1 ; i+= 2){
+        for(int i = 0  ; i < antwort.length()-1 ; i+= 2){
 
-            solution.replace(solution.charAt(i),ascii.charAt(i));
+            antwort.replace(antwort.charAt(i),ascii.charAt(i));
         }
 
-        gib_matnr.setText(solution);
-        // server
+        antwort_server.setText(antwort);
+        serverSide();
+    }
+
+    public void serverSide() {
+
+        TextView antwort_server = findViewById(R.id.antwort_server);
+        EditText matnr_input = findViewById(R.id.matnr_input);
+
+       Thread thread = new Thread(new Runnable() {
+           @Override
+           public void run() {
+
+           }
+       });
+
+       thread.start();
+
+       try {
+           thread.join();
+       }catch (InterruptedException e){
+           e.printStackTrace();
+       }
+
     }
 
 }
